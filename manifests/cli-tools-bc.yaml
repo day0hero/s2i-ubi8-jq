@@ -1,0 +1,27 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: cli-tools-build
+  labels:
+    app: cli-tools
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/day0hero/s2i-ubi8-jq
+    contextDir: containerfiles
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      from:
+        kind: ImageStreamTag  
+        namespace: openshift
+        name: cli:latest
+  output:
+    to:
+      kind: ImageStreamTag
+      name: cli-tools:latest
+  triggers:
+  - type: ImageChange        
+
